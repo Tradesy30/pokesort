@@ -4,36 +4,37 @@
 
 :root {
   /* Core colors */
-  --primary: #FF6B6B;
-  --primary-light: #FF8787;
-  --primary-dark: #FA5252;
+  --primary: #38bdf8;
+  --primary-light: #7dd3fc;
+  --primary-dark: #0284c7;
 
-  --secondary: #4ECDC4;
-  --secondary-light: #72EFE9;
-  --secondary-dark: #45B7AF;
+  --secondary: #22d3ee;
+  --secondary-light: #67e8f9;
+  --secondary-dark: #0891b2;
 
   /* Background colors */
-  --bg-primary: #0F172A;
-  --bg-secondary: #1E293B;
-  --bg-tertiary: #334155;
+  --bg-primary: #030712;
+  --bg-secondary: #111827;
+  --bg-tertiary: #1f2937;
 
   /* Gradient colors */
-  --gradient-start: #FF6B6B;
-  --gradient-end: #4ECDC4;
+  --gradient-start: #38bdf8;
+  --gradient-mid: #22d3ee;
+  --gradient-end: #818cf8;
 
   /* Text colors */
   --text-primary: #FFFFFF;
-  --text-secondary: #E2E8F0;
-  --text-muted: #94A3B8;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
 
   /* Accent colors */
-  --accent-1: #FFE66D;
-  --accent-2: #4ECDC4;
-  --accent-3: #95E1D3;
+  --accent-1: #38bdf8;
+  --accent-2: #22d3ee;
+  --accent-3: #818cf8;
 
   /* Card and surface colors */
-  --surface-primary: #1E293B;
-  --surface-secondary: #334155;
+  --surface-primary: #111827;
+  --surface-secondary: #1f2937;
 
   /* Animation durations */
   --animation-slow: 700ms;
@@ -64,7 +65,7 @@ body {
 @layer components {
   .gradient-text {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+    background-image: linear-gradient(to right, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
   }
 
   .card {
@@ -75,29 +76,29 @@ body {
   }
 
   .button-primary {
-    @apply px-6 py-3 rounded-lg font-medium transition-all duration-300;
+    @apply px-8 py-3 rounded-lg font-medium transition-all duration-300;
     background-color: var(--primary);
     color: var(--text-primary);
-    box-shadow: 0 4px 6px -1px rgba(255, 107, 107, 0.2);
+    box-shadow: 0 4px 6px -1px rgba(56, 189, 248, 0.2);
   }
 
   .button-primary:hover {
-    background-color: var(--primary-light);
+    background-color: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 6px 8px -1px rgba(255, 107, 107, 0.3);
+    box-shadow: 0 6px 8px -1px rgba(56, 189, 248, 0.3);
   }
 
   .button-secondary {
-    @apply px-6 py-3 rounded-lg font-medium transition-all duration-300;
-    background-color: var(--secondary);
+    @apply px-8 py-3 rounded-lg font-medium transition-all duration-300;
+    background-color: var(--bg-tertiary);
     color: var(--text-primary);
-    box-shadow: 0 4px 6px -1px rgba(78, 205, 196, 0.2);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   }
 
   .button-secondary:hover {
-    background-color: var(--secondary-light);
+    background-color: var(--surface-secondary);
     transform: translateY(-2px);
-    box-shadow: 0 6px 8px -1px rgba(78, 205, 196, 0.3);
+    box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.2);
   }
 
   .section-padding {
@@ -106,5 +107,26 @@ body {
 
   .container-width {
     @apply max-w-7xl mx-auto;
+  }
+
+  .nav-link {
+    @apply text-gray-300 hover:text-white transition-colors duration-200;
+  }
+
+  .gradient-border {
+    position: relative;
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: 0.5rem;
+    background: linear-gradient(to right, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
   }
 }
