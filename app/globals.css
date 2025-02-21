@@ -3,8 +3,47 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core colors */
+  --primary: #FF6B6B;
+  --primary-light: #FF8787;
+  --primary-dark: #FA5252;
+
+  --secondary: #4ECDC4;
+  --secondary-light: #72EFE9;
+  --secondary-dark: #45B7AF;
+
+  /* Background colors */
+  --bg-primary: #0F172A;
+  --bg-secondary: #1E293B;
+  --bg-tertiary: #334155;
+
+  /* Gradient colors */
+  --gradient-start: #FF6B6B;
+  --gradient-end: #4ECDC4;
+
+  /* Text colors */
+  --text-primary: #FFFFFF;
+  --text-secondary: #E2E8F0;
+  --text-muted: #94A3B8;
+
+  /* Accent colors */
+  --accent-1: #FFE66D;
+  --accent-2: #4ECDC4;
+  --accent-3: #95E1D3;
+
+  /* Card and surface colors */
+  --surface-primary: #1E293B;
+  --surface-secondary: #334155;
+
+  /* Animation durations */
+  --animation-slow: 700ms;
+  --animation-medium: 500ms;
+  --animation-fast: 300ms;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -14,8 +53,58 @@
   }
 }
 
+/* Base styles */
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Utility classes */
+@layer components {
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+  }
+
+  .card {
+    @apply bg-opacity-50 backdrop-blur-sm rounded-lg shadow-lg;
+    background-color: var(--surface-primary);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .button-primary {
+    @apply px-6 py-3 rounded-lg font-medium transition-all duration-300;
+    background-color: var(--primary);
+    color: var(--text-primary);
+    box-shadow: 0 4px 6px -1px rgba(255, 107, 107, 0.2);
+  }
+
+  .button-primary:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px -1px rgba(255, 107, 107, 0.3);
+  }
+
+  .button-secondary {
+    @apply px-6 py-3 rounded-lg font-medium transition-all duration-300;
+    background-color: var(--secondary);
+    color: var(--text-primary);
+    box-shadow: 0 4px 6px -1px rgba(78, 205, 196, 0.2);
+  }
+
+  .button-secondary:hover {
+    background-color: var(--secondary-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px -1px rgba(78, 205, 196, 0.3);
+  }
+
+  .section-padding {
+    @apply py-12 px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-width {
+    @apply max-w-7xl mx-auto;
+  }
 }

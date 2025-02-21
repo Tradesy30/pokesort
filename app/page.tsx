@@ -1,101 +1,222 @@
-import Image from "next/image";
+'use client';
+
+import Link from "next/link";
+import { motion } from "framer-motion";
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5 }
+};
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+};
+
+const floatingAnimation = {
+  animate: {
+    y: [0, -10, 0],
+    transition: {
+      duration: 3,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }
+  }
+};
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <main className="min-h-screen bg-gradient-to-b from-[var(--bg-primary)] to-[var(--bg-secondary)] p-6 relative overflow-hidden">
+      {/* Decorative Elements */}
+      <motion.div
+        className="absolute top-20 left-10 w-64 h-64 rounded-full mix-blend-multiply filter blur-xl opacity-20"
+        style={{ backgroundColor: 'var(--primary)' }}
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.2, 0.3, 0.2],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+        }}
+      />
+      <motion.div
+        className="absolute bottom-20 right-10 w-64 h-64 rounded-full mix-blend-multiply filter blur-xl opacity-20"
+        style={{ backgroundColor: 'var(--secondary)' }}
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.2, 0.3, 0.2],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          delay: 2,
+        }}
+      />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      {/* Hero Section */}
+      <section className="container-width section-padding relative">
+        <motion.div
+          className="text-center"
+          initial="initial"
+          animate="animate"
+          variants={staggerContainer}
+        >
+          <motion.div variants={fadeInUp}>
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+              <motion.span
+                className="inline-block gradient-text"
+                animate={{ rotate: [0, -2, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                PokéSort
+              </motion.span>
+              <motion.span
+                className="block mt-2"
+                style={{ color: 'var(--secondary)' }}
+                variants={fadeInUp}
+              >
+                Your Pokémon Collection Manager
+              </motion.span>
+            </h1>
+          </motion.div>
+
+          <motion.p
+            className="mt-6 max-w-2xl mx-auto text-lg"
+            style={{ color: 'var(--text-secondary)' }}
+            variants={fadeInUp}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Organize and track your Pokémon collection with ease. Keep track of what you have,
+            what you need, and manage your collection like never before.
+          </motion.p>
+
+          <motion.div
+            className="mt-10 max-w-md mx-auto sm:flex sm:justify-center md:mt-12"
+            variants={fadeInUp}
           >
-            Read our docs
-          </a>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Link href="/get-started" className="button-primary">
+                Get Started
+              </Link>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Features Section */}
+      <motion.section
+        className="container-width section-padding"
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true }}
+        variants={staggerContainer}
+      >
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            {
+              title: "Easy Organization",
+              description: "Sort your Pokémon by type, generation, or any criteria you prefer. Finding specific Pokémon has never been easier.",
+              icon: "🔍"
+            },
+            {
+              title: "Collection Tracking",
+              description: "Keep track of your entire collection in one place. Know exactly what you have and what you're missing.",
+              icon: "📊"
+            },
+            {
+              title: "Smart Search",
+              description: "Powerful search and filter options to help you find exactly what you're looking for in your collection.",
+              icon: "⚡"
+            }
+          ].map((feature) => (
+            <motion.div
+              key={feature.title}
+              className="card group"
+              variants={fadeInUp}
+              whileHover={{ y: -5 }}
+            >
+              <div className="p-6">
+                <motion.div
+                  className="absolute top-0 right-0 p-4 text-4xl opacity-20 group-hover:opacity-30 transition-opacity duration-300"
+                  animate={floatingAnimation}
+                >
+                  {feature.icon}
+                </motion.div>
+                <h3 className="text-xl font-semibold mb-4 gradient-text">{feature.title}</h3>
+                <p style={{ color: 'var(--text-secondary)' }}>{feature.description}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </motion.section>
+
+      {/* Call to Action */}
+      <motion.section
+        className="container-width section-padding"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.div
+          className="rounded-lg shadow-xl overflow-hidden"
+          style={{
+            background: `linear-gradient(to right, var(--gradient-start), var(--gradient-end))`,
+          }}
+          whileHover={{ scale: 1.02 }}
+          transition={{ duration: 0.3 }}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          <div className="px-6 py-12 text-center sm:px-16 relative">
+            <motion.div
+              className="absolute inset-0 bg-white opacity-5"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.05, 0.08, 0.05]
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            <motion.h2
+              className="text-2xl font-bold sm:text-3xl"
+              style={{ color: 'var(--text-primary)' }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              Ready to organize your collection?
+            </motion.h2>
+            <motion.p
+              className="mt-4 text-lg"
+              style={{ color: 'var(--text-secondary)' }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              Join now and start managing your Pokémon collection like a pro.
+            </motion.p>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="mt-8 inline-block"
+            >
+              <Link href="/get-started" className="button-secondary">
+                Start Now
+              </Link>
+            </motion.div>
+          </div>
+        </motion.div>
+      </motion.section>
+    </main>
   );
 }
