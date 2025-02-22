@@ -41,19 +41,19 @@ export const authOptions: NextAuthOptions = {
           const validatedFields = loginSchema.safeParse(credentials);
 
           if (!validatedFields.success) {
-            return null;
+            throw new Error('VALIDATION_ERROR');
           }
 
           const user = await User.findOne({ username: credentials?.username });
 
           if (!user) {
-            return null;
+            throw new Error('USER_NOT_FOUND');
           }
 
           const isValid = await user.comparePassword(credentials?.password as string);
 
           if (!isValid) {
-            return null;
+            throw new Error('INVALID_PASSWORD');
           }
 
           return {
@@ -63,9 +63,9 @@ export const authOptions: NextAuthOptions = {
             name: user.name,
             image: user.image,
           };
-        } catch (error) {
+        } catch (error: any) {
           console.error('Auth error:', error);
-          return null;
+          throw error; // Propagate the error to be handled by NextAuth
         }
       }
     }),

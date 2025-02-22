@@ -22,7 +22,13 @@ export async function POST(request: Request) {
 
     if (!validatedFields.success) {
       return NextResponse.json(
-        { error: "Invalid input", details: validatedFields.error.errors },
+        {
+          error: "VALIDATION_ERROR",
+          details: validatedFields.error.errors.map(err => ({
+            field: err.path.join('.'),
+            message: err.message
+          }))
+        },
         { status: 400 }
       );
     }
@@ -35,8 +41,13 @@ export async function POST(request: Request) {
     });
 
     if (existingUser) {
+      const field = existingUser.email === email ? 'email' : 'username';
       return NextResponse.json(
-        { error: "Username or email already exists" },
+        {
+          error: "DUPLICATE_ERROR",
+          field,
+          message: `This ${field} is already registered`
+        },
         { status: 409 }
       );
     }
@@ -58,10 +69,28 @@ export async function POST(request: Request) {
       },
       { status: 201 }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error("Registration error:", error);
+
+    // Handle mongoose validation errors
+    if (error.name === 'ValidationError') {
+      return NextResponse.json(
+        {
+          error: "VALIDATION_ERROR",
+          details: Object.keys(error.errors).map(field => ({
+            field,
+            message: error.errors[field].message
+          }))
+        },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json(
-      { error: "Something went wrong" },
+      {
+        error: "SERVER_ERROR",
+        message: "Something went wrong. Please try again later."
+      },
       { status: 500 }
     );
   }

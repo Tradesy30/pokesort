@@ -5,6 +5,12 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { Sparkles } from '@/app/components/ui/sparkles';
+import PasswordInput from '@/app/components/ui/password-input';
+
+interface FieldError {
+  field: string;
+  message: string;
+}
 
 export default function SignUp() {
   const router = useRouter();
@@ -14,18 +20,14 @@ export default function SignUp() {
     password: '',
     confirmPassword: '',
   });
-  const [error, setError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<FieldError[]>([]);
+  const [generalError, setGeneralError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords don't match");
-      return;
-    }
-
+    setErrors([]);
+    setGeneralError(null);
     setIsLoading(true);
 
     try {
@@ -40,7 +42,17 @@ export default function SignUp() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || data.details?.[0]?.message || 'Something went wrong');
+        if (data.error === 'VALIDATION_ERROR') {
+          setErrors(data.details);
+          return;
+        }
+
+        if (data.error === 'DUPLICATE_ERROR') {
+          setErrors([{ field: data.field, message: data.message }]);
+          return;
+        }
+
+        throw new Error(data.message || 'Something went wrong');
       }
 
       // Sign in the user after successful registration
@@ -56,10 +68,14 @@ export default function SignUp() {
 
       router.push('/dashboard/mobile');
     } catch (err: any) {
-      setError(err.message);
+      setGeneralError(err.message);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const getFieldError = (fieldName: string) => {
+    return errors.find(error => error.field === fieldName)?.message;
   };
 
   return (
@@ -88,13 +104,13 @@ export default function SignUp() {
           </p>
         </div>
 
-        {error && (
+        {generalError && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-            {error}
+            {generalError}
           </div>
         )}
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div className="space-y-4">
             <div>
               <label htmlFor="username" className="text-sm font-medium text-[var(--text-primary)]">
@@ -105,12 +121,19 @@ export default function SignUp() {
                 name="username"
                 type="text"
                 required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 mt-1 border border-[var(--surface-primary)] bg-[var(--bg-tertiary)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`appearance-none rounded-lg relative block w-full px-3 py-2 mt-1 border ${
+                  getFieldError('username')
+                    ? 'border-red-500 focus:ring-red-500'
+                    : 'border-[var(--surface-primary)] focus:ring-blue-500'
+                } bg-[var(--bg-tertiary)] text-[var(--text-primary)] focus:outline-none focus:ring-2`}
                 value={formData.username}
                 onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                 disabled={isLoading}
                 minLength={3}
               />
+              {getFieldError('username') && (
+                <p className="mt-1 text-xs text-red-500">{getFieldError('username')}</p>
+              )}
             </div>
 
             <div>
@@ -122,49 +145,43 @@ export default function SignUp() {
                 name="email"
                 type="email"
                 required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 mt-1 border border-[var(--surface-primary)] bg-[var(--bg-tertiary)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`appearance-none rounded-lg relative block w-full px-3 py-2 mt-1 border ${
+                  getFieldError('email')
+                    ? 'border-red-500 focus:ring-red-500'
+                    : 'border-[var(--surface-primary)] focus:ring-blue-500'
+                } bg-[var(--bg-tertiary)] text-[var(--text-primary)] focus:outline-none focus:ring-2`}
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 disabled={isLoading}
               />
+              {getFieldError('email') && (
+                <p className="mt-1 text-xs text-red-500">{getFieldError('email')}</p>
+              )}
             </div>
 
-            <div>
-              <label htmlFor="password" className="text-sm font-medium text-[var(--text-primary)]">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 mt-1 border border-[var(--surface-primary)] bg-[var(--bg-tertiary)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                disabled={isLoading}
-                minLength={8}
-              />
-              <p className="mt-1 text-xs text-[var(--text-secondary)]">
-                Must be at least 8 characters
-              </p>
-            </div>
+            <PasswordInput
+              id="password"
+              name="password"
+              label="Password"
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              disabled={isLoading}
+              required
+              minLength={8}
+              error={getFieldError('password')}
+            />
 
-            <div>
-              <label htmlFor="confirmPassword" className="text-sm font-medium text-[var(--text-primary)]">
-                Confirm Password
-              </label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 mt-1 border border-[var(--surface-primary)] bg-[var(--bg-tertiary)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.confirmPassword}
-                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                disabled={isLoading}
-                minLength={8}
-              />
-            </div>
+            <PasswordInput
+              id="confirmPassword"
+              name="confirmPassword"
+              label="Confirm Password"
+              value={formData.confirmPassword}
+              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+              disabled={isLoading}
+              required
+              minLength={8}
+              error={getFieldError('confirmPassword')}
+            />
           </div>
 
           <div>

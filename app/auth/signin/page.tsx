@@ -5,20 +5,39 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useState, Suspense } from "react";
 import Link from "next/link";
 import { Sparkles } from '@/app/components/ui/sparkles';
+import PasswordInput from '@/app/components/ui/password-input';
 
 function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard/mobile";
-  const error = searchParams.get("error");
-  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getErrorMessage = (errorType: string | null) => {
+    switch (errorType) {
+      case 'USER_NOT_FOUND':
+        return 'No account found with this username';
+      case 'INVALID_PASSWORD':
+        return 'Incorrect password';
+      case 'VALIDATION_ERROR':
+        return 'Please check your username and password';
+      case 'CredentialsSignin':
+        return 'Invalid username or password';
+      case 'Default':
+        return 'An error occurred during sign in';
+      default:
+        return 'Something went wrong. Please try again.';
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     setIsLoading(true);
 
     try {
@@ -29,12 +48,14 @@ function SignInForm() {
       });
 
       if (result?.error) {
-        throw new Error('Invalid username or password');
+        setError(result.error);
+        return;
       }
 
       router.push(callbackUrl);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Sign in error:', error);
+      setError('Default');
     } finally {
       setIsLoading(false);
     }
@@ -67,15 +88,14 @@ function SignInForm() {
         </div>
 
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-relative" role="alert">
             <span className="block sm:inline">
-              {error === "CredentialsSignin" && "Invalid username or password"}
-              {error === "Default" && "An error occurred during authentication"}
+              {getErrorMessage(error)}
             </span>
           </div>
         )}
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div className="space-y-4">
             <div>
               <label htmlFor="username" className="text-sm font-medium text-[var(--text-primary)]">
@@ -93,21 +113,16 @@ function SignInForm() {
               />
             </div>
 
-            <div>
-              <label htmlFor="password" className="text-sm font-medium text-[var(--text-primary)]">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 mt-1 border border-[var(--surface-primary)] bg-[var(--bg-tertiary)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                disabled={isLoading}
-              />
-            </div>
+            <PasswordInput
+              id="password"
+              name="password"
+              label="Password"
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              disabled={isLoading}
+              required
+              error={getErrorMessage(error)}
+            />
           </div>
 
           <div>
