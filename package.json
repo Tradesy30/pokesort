@@ -11,9 +11,11 @@
   "dependencies": {
     "@auth/mongodb-adapter": "^3.7.4",
     "@heroicons/react": "^2.2.0",
+    "@radix-ui/react-dialog": "^1.1.6",
     "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^3.0.2",
     "framer-motion": "^12.4.7",
+    "lucide-react": "^0.475.0",
     "mongodb": "^6.13.1",
     "mongoose": "^8.10.1",
     "next": "15.1.7",

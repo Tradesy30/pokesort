@@ -73,7 +73,7 @@ export default function MobileDashboard() {
   }
 
   return (
-    <main className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden pt-14">
+    <main className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden pt-1">
       {/* Background Effects */}
       <div className="absolute inset-0 z-0">
         <Sparkles
