@@ -1,27 +1,30 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers";
 import Navbar from "./components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "PokéSort - Pokémon Collection Manager",
-  description: "Organize and track your Pokémon collection with ease.",
+  title: "PokéSort - Manage Your Pokémon Collection",
+  description: "A modern Pokémon collection management application",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-        <div className="pt-16">
-          {children}
-        </div>
+        <Providers>
+          <Navbar />
+          <main className="pt-16">
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );

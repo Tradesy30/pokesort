@@ -5,6 +5,8 @@ import { Sparkles } from '@/app/components/ui/sparkles';
 import Link from 'next/link';
 import { PokemonCardModal } from '@/app/components/pokemon/PokemonCardModal';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { AchievementsPanel } from '@/app/components/achievements/AchievementsPanel';
 
 const fadeInUp = {
@@ -22,6 +24,8 @@ const staggerContainer = {
 };
 
 export default function Dashboard() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [selectedCard, setSelectedCard] = useState<null | {
     id: string;
     number: string;
@@ -32,6 +36,14 @@ export default function Dashboard() {
     isCollected: boolean;
     imageUrl?: string;
   }>(null);
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   // Mock Pokédex data
   const pokemonData = [...Array(12)].map((_, i) => ({
@@ -64,11 +76,21 @@ export default function Dashboard() {
         <section className="container-width py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-[var(--bg-tertiary)] flex items-center justify-center">
-                <span className="text-xl">👤</span>
+              <div className="w-10 h-10 rounded-full bg-[var(--bg-tertiary)] flex items-center justify-center overflow-hidden">
+                {session?.user?.image ? (
+                  <img
+                    src={session.user.image}
+                    alt={session.user.username || 'User'}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-xl">👤</span>
+                )}
               </div>
               <div>
-                <h3 className="font-medium text-[var(--text-primary)]">Trainer Name</h3>
+                <h3 className="font-medium text-[var(--text-primary)]">
+                  {session?.user?.username || 'Loading...'}
+                </h3>
                 <p className="text-sm text-[var(--text-secondary)]">Collector Level 1</p>
               </div>
             </div>

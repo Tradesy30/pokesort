@@ -5,6 +5,8 @@ import { Sparkles } from '@/app/components/ui/sparkles';
 import Link from 'next/link';
 import { PokemonCardModal } from '@/app/components/pokemon/PokemonCardModal';
 import { useState } from 'react';
+import { useSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { AchievementsPanel } from '@/app/components/achievements/AchievementsPanel';
 
 const fadeInUp = {
@@ -46,6 +48,8 @@ const MOCK_ACTIVITIES = [
 ];
 
 export default function MobileDashboard() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [selectedCard, setSelectedCard] = useState<null | {
     id: string;
     number: string;
@@ -60,8 +64,16 @@ export default function MobileDashboard() {
   const [showGenerations, setShowGenerations] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
 
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
   return (
-    <main className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden">
+    <main className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden pt-14">
       {/* Background Effects */}
       <div className="absolute inset-0 z-0">
         <Sparkles
@@ -80,18 +92,31 @@ export default function MobileDashboard() {
         <section className="container-width py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-[var(--bg-tertiary)] flex items-center justify-center">
-                <span className="text-xl">👤</span>
+              <div className="w-10 h-10 rounded-full bg-[var(--bg-tertiary)] flex items-center justify-center overflow-hidden">
+                {session?.user?.image ? (
+                  <img
+                    src={session.user.image}
+                    alt={session.user.username || 'User'}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-xl">👤</span>
+                )}
               </div>
               <div>
-                <h3 className="font-medium text-[var(--text-primary)]">Trainer Name</h3>
+                <h3 className="font-medium text-[var(--text-primary)]">
+                  {session?.user?.username || 'Loading...'}
+                </h3>
                 <p className="text-sm text-[var(--text-secondary)]">Collector Level 1</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <button className="p-2 rounded-lg bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
+              <button
+                onClick={() => signOut({ callbackUrl: '/auth/signin' })}
+                className="p-2 rounded-lg bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
               </button>
               <button className="p-2 rounded-lg bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
