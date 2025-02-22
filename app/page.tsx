@@ -118,7 +118,7 @@ export default function Home() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Link href="/get-started" className="button-primary text-lg lg:text-xl lg:px-12 lg:py-4">
+                <Link href="/dashboard" className="button-primary text-lg lg:text-xl lg:px-12 lg:py-4">
                   Get Started
                 </Link>
               </motion.div>
@@ -209,7 +209,7 @@ export default function Home() {
                 whileTap={{ scale: 0.95 }}
                 className="mt-8 lg:mt-10 inline-block"
               >
-                <Link href="/get-started" className="button-primary text-lg lg:text-xl lg:px-12 lg:py-4">
+                <Link href="/dashboard" className="button-primary text-lg lg:text-xl lg:px-12 lg:py-4">
                   Start Now
                 </Link>
               </motion.div>
