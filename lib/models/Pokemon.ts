@@ -67,7 +67,7 @@ const PokemonSchema = new Schema<IPokemon>(
 );
 
 // Add indexes for better query performance
-PokemonSchema.index({ number: 1 });
+// Removing duplicate number index since it's already defined in the schema
 PokemonSchema.index({ name: 1 });
 PokemonSchema.index({ types: 1 });
 PokemonSchema.index({ rarity: 1 });
