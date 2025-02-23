@@ -1,4 +1,4 @@
-import { Background } from '@/components/home/Background';
+import { Background } from '@/components/ui/Background';
 import { HeroSection } from '@/components/home/HeroSection';
 import { FeaturesSection } from '@/components/home/FeaturesSection';
 import { CallToAction } from '@/components/home/CallToAction';

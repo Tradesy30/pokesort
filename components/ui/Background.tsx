@@ -10,7 +10,7 @@ const Sparkles = dynamic(() => import('@/components/ui/sparkles').then(mod => mo
   loading: () => null // No loading state needed for decorative element
 });
 
-export const PageBackground = () => {
+export const Background = () => {
   return (
     <>
       <div className="fixed inset-0">
@@ -18,10 +18,10 @@ export const PageBackground = () => {
           <Sparkles
             id="sparkles"
             particleColor="#60A5FA"
-            particleDensity={50}
-            speed={0.3}
-            minSize={0.8}
-            maxSize={1.5}
+            particleDensity={100}
+            speed={2.0}
+            minSize={2.0}
+            maxSize={2.5}
             particleGlow={true}
           />
         </Suspense>

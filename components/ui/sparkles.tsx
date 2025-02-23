@@ -34,12 +34,12 @@ function debounce<T extends (...args: unknown[]) => void>(
 export function Sparkles({
   id = "sparkles",
   background = "transparent",
-  minSize = 1.0,
+  minSize = 2.0,
   maxSize = 2.5,
-  particleDensity = 100,
+  particleDensity = 50,
   className = "h-full w-full",
   particleColor = "#38bdf8",
-  speed = 1,
+  speed = 2,
   particleGlow = true,
 }: SparklesProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);

@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Sparkles } from '@/components/ui/sparkles';
 import { PokemonCardModal } from '@/components/pokemon/PokemonCardModal';
 import { use, useState } from 'react';
+import { Background } from "@/components/ui/Background";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -60,17 +60,7 @@ export default function ExpansionDetail({ params }: { params: Promise<{ id: stri
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden">
       {/* Background Effects */}
-      <div className="absolute inset-0 z-0">
-        <Sparkles
-          id="sparkles"
-          particleColor="#60A5FA"
-          particleDensity={50}
-          speed={0.3}
-          minSize={0.8}
-          maxSize={1.5}
-          particleGlow={true}
-        />
-      </div>
+      <Background />
 
       <div className="relative z-10">
         {/* Navigation */}

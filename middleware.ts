@@ -17,7 +17,7 @@ export default withAuth(
     response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
     response.headers.set(
       'Permissions-Policy',
-      'camera=(), microphone=(), geolocation=(), interest-cohort=()'
+      'camera=(), microphone=(), geolocation=(), payment=(), usb=(), screen-wake-lock=(), accelerometer=(), gyroscope=()'
     );
 
     if (process.env.NODE_ENV === 'production') {

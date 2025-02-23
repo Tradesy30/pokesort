@@ -4,9 +4,9 @@
 
 :root {
   /* Core colors */
-  --primary: #38bdf8;
-  --primary-light: #7dd3fc;
-  --primary-dark: #0284c7;
+  --primary: #0284c7;
+  --primary-light: #38bdf8;
+  --primary-dark: #075985;
 
   --secondary: #22d3ee;
   --secondary-light: #67e8f9;

@@ -1,12 +1,12 @@
 'use client';
 
 import { motion } from "framer-motion";
-import { Sparkles } from '@/components/ui/sparkles';
 import Link from 'next/link';
 import { PokemonCardModal } from '@/components/pokemon/PokemonCardModal';
 import { useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { Background } from "@/components/ui/Background";
 
 
 const fadeInUp = {
@@ -75,17 +75,7 @@ export default function MobileDashboard() {
   return (
     <main className="fixed inset-0 bg-[var(--bg-primary)] overflow-y-auto mt-14">
       {/* Background Effects */}
-      <div className="fixed inset-0">
-        <Sparkles
-          id="sparkles"
-          particleColor="#60A5FA"
-          particleDensity={50}
-          speed={0.3}
-          minSize={0.8}
-          maxSize={1.5}
-          particleGlow={true}
-        />
-      </div>
+      <Background />
 
       <div className="relative z-10 min-h-full pt-1">
         {/* User Profile Bar */}
