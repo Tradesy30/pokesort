@@ -18,7 +18,7 @@ const signUpSchema = z.object({
 export async function POST(request: Request) {
   try {
     // Apply rate limiting
-    const headersList = headers();
+    const headersList = await headers();
     const forwardedFor = headersList.get('x-forwarded-for');
     const ip = forwardedFor?.split(',')[0] || 'unknown';
 
