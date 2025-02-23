@@ -79,9 +79,9 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)] relative overflow-hidden">
+    <div className="fixed inset-0 flex items-center justify-center bg-[var(--bg-primary)] p-4">
       {/* Sparkles Background */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0">
         <Sparkles
           id="sparkles"
           particleColor="#60A5FA"
@@ -93,27 +93,27 @@ export default function SignUp() {
         />
       </div>
 
-      {/* Content Container with higher z-index */}
-      <div className="max-w-md w-full space-y-8 p-8 bg-[var(--bg-secondary)] rounded-xl shadow-lg relative z-10">
-        <div className="text-center">
-          <h2 className="mt-6 text-3xl font-bold text-[var(--text-primary)]">
+      {/* Content Container */}
+      <div className="w-full max-w-md mx-auto space-y-6 bg-[var(--bg-secondary)] rounded-xl shadow-lg relative z-10 p-6 sm:p-8 overflow-y-auto max-h-full">
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">
             Create your account
           </h2>
-          <p className="mt-2 text-sm text-[var(--text-secondary)]">
+          <p className="text-sm text-[var(--text-secondary)]">
             Join PokéSort and start managing your collection
           </p>
         </div>
 
         {generalError && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
             {generalError}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div>
-              <label htmlFor="username" className="text-sm font-medium text-[var(--text-primary)]">
+              <label htmlFor="username" className="block text-sm font-medium text-[var(--text-primary)]">
                 Username
               </label>
               <input
@@ -121,15 +121,16 @@ export default function SignUp() {
                 name="username"
                 type="text"
                 required
-                className={`appearance-none rounded-lg relative block w-full px-3 py-2 mt-1 border ${
+                className={`mt-1 block w-full rounded-lg px-3 py-2 bg-[var(--bg-tertiary)] border ${
                   getFieldError('username')
                     ? 'border-red-500 focus:ring-red-500'
                     : 'border-[var(--surface-primary)] focus:ring-blue-500'
-                } bg-[var(--bg-tertiary)] text-[var(--text-primary)] focus:outline-none focus:ring-2`}
+                } text-[var(--text-primary)] focus:outline-none focus:ring-2 transition-colors duration-200`}
                 value={formData.username}
                 onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                 disabled={isLoading}
                 minLength={3}
+                placeholder="Choose a username"
               />
               {getFieldError('username') && (
                 <p className="mt-1 text-xs text-red-500">{getFieldError('username')}</p>
@@ -137,7 +138,7 @@ export default function SignUp() {
             </div>
 
             <div>
-              <label htmlFor="email" className="text-sm font-medium text-[var(--text-primary)]">
+              <label htmlFor="email" className="block text-sm font-medium text-[var(--text-primary)]">
                 Email address
               </label>
               <input
@@ -145,14 +146,15 @@ export default function SignUp() {
                 name="email"
                 type="email"
                 required
-                className={`appearance-none rounded-lg relative block w-full px-3 py-2 mt-1 border ${
+                className={`mt-1 block w-full rounded-lg px-3 py-2 bg-[var(--bg-tertiary)] border ${
                   getFieldError('email')
                     ? 'border-red-500 focus:ring-red-500'
                     : 'border-[var(--surface-primary)] focus:ring-blue-500'
-                } bg-[var(--bg-tertiary)] text-[var(--text-primary)] focus:outline-none focus:ring-2`}
+                } text-[var(--text-primary)] focus:outline-none focus:ring-2 transition-colors duration-200`}
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 disabled={isLoading}
+                placeholder="Enter your email"
               />
               {getFieldError('email') && (
                 <p className="mt-1 text-xs text-red-500">{getFieldError('email')}</p>
@@ -169,6 +171,7 @@ export default function SignUp() {
               required
               minLength={8}
               error={getFieldError('password')}
+              placeholder="Create a password"
             />
 
             <PasswordInput
@@ -181,28 +184,30 @@ export default function SignUp() {
               required
               minLength={8}
               error={getFieldError('confirmPassword')}
+              placeholder="Confirm your password"
             />
           </div>
 
-          <div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? 'Creating account...' : 'Sign up'}
-            </button>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+          >
+            {isLoading ? 'Creating account...' : 'Sign up'}
+          </button>
+
+          <div className="text-center">
+            <p className="text-sm text-[var(--text-secondary)]">
+              Already have an account?{' '}
+              <Link
+                href="/auth/signin"
+                className="text-blue-500 hover:text-blue-600 transition-colors duration-200"
+              >
+                Sign in
+              </Link>
+            </p>
           </div>
         </form>
-
-        <div className="text-center text-sm">
-          <p className="text-[var(--text-secondary)]">
-            Already have an account?{' '}
-            <Link href="/auth/signin" className="text-blue-500 hover:text-blue-600">
-              Sign in
-            </Link>
-          </p>
-        </div>
       </div>
     </div>
   );

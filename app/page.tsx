@@ -31,9 +31,9 @@ const floatingAnimation = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[var(--bg-primary)] to-[var(--bg-secondary)] p-4 sm:p-6 lg:p-8 relative overflow-hidden">
+    <main className="fixed inset-0 bg-gradient-to-b from-[var(--bg-primary)] to-[var(--bg-secondary)] overflow-y-auto">
       {/* Sparkles Background */}
-      <div className="absolute inset-0 z-0">
+      <div className="fixed inset-0">
         <Sparkles
           id="sparkles"
           particleColor="#60A5FA"
@@ -45,8 +45,8 @@ export default function Home() {
         />
       </div>
 
-      {/* Content Container with higher z-index */}
-      <div className="relative z-10">
+      {/* Content Container */}
+      <div className="relative z-10 min-h-full p-4 sm:p-6 lg:p-8">
         {/* Decorative Elements */}
         <motion.div
           className="absolute top-20 left-10 w-64 h-64 lg:w-96 lg:h-96 rounded-full mix-blend-multiply filter blur-xl opacity-20"

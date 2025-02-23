@@ -1,6 +1,6 @@
 export default function DashboardLoading() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
+    <div className="fixed inset-0 flex items-center justify-center bg-[var(--bg-primary)]">
       <div className="space-y-8 w-full max-w-md px-4">
         {/* Profile Skeleton */}
         <div className="flex items-center space-x-4">

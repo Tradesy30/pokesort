@@ -66,16 +66,16 @@ export default function MobileDashboard() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
+      <div className="fixed inset-0 flex items-center justify-center bg-[var(--bg-primary)]">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden pt-1">
+    <main className="fixed inset-0 bg-[var(--bg-primary)] overflow-y-auto mt-14">
       {/* Background Effects */}
-      <div className="absolute inset-0 z-0">
+      <div className="fixed inset-0">
         <Sparkles
           id="sparkles"
           particleColor="#60A5FA"
@@ -87,7 +87,7 @@ export default function MobileDashboard() {
         />
       </div>
 
-      <div className="relative z-10">
+      <div className="relative z-10 min-h-full pt-1">
         {/* User Profile Bar */}
         <section className="container-width py-4">
           <div className="flex items-center justify-between">
@@ -316,7 +316,7 @@ export default function MobileDashboard() {
         </div>
       </div>
 
-      {/* Pokemon Card Modal */}
+      {/* Modal */}
       <PokemonCardModal
         isOpen={selectedCard !== null}
         onClose={() => setSelectedCard(null)}

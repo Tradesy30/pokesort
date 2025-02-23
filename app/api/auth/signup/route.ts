@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import dbConnect from "@/lib/db/connect";
 import User from "@/lib/models/User";
+import { isRateLimited, getRateLimitResponse } from "@/lib/rate-limit";
+import { headers } from 'next/headers';
 
 const signUpSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
@@ -15,6 +17,15 @@ const signUpSchema = z.object({
 
 export async function POST(request: Request) {
   try {
+    // Apply rate limiting
+    const headersList = headers();
+    const forwardedFor = headersList.get('x-forwarded-for');
+    const ip = forwardedFor?.split(',')[0] || 'unknown';
+
+    if (isRateLimited({ ip, route: 'signup' })) {
+      return getRateLimitResponse();
+    }
+
     await dbConnect();
 
     const body = await request.json();
@@ -70,26 +81,11 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error: any) {
-    console.error("Registration error:", error);
-
-    // Handle mongoose validation errors
-    if (error.name === 'ValidationError') {
-      return NextResponse.json(
-        {
-          error: "VALIDATION_ERROR",
-          details: Object.keys(error.errors).map(field => ({
-            field,
-            message: error.errors[field].message
-          }))
-        },
-        { status: 400 }
-      );
-    }
-
+    console.error('Signup error:', error);
     return NextResponse.json(
       {
         error: "SERVER_ERROR",
-        message: "Something went wrong. Please try again later."
+        message: "An unexpected error occurred"
       },
       { status: 500 }
     );
