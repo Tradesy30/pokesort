@@ -7,7 +7,7 @@ import { PokemonCardModal } from '@/components/pokemon/PokemonCardModal';
 import { useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { AchievementsPanel } from '@/components/achievements/AchievementsPanel';
+
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },

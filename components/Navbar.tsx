@@ -24,14 +24,11 @@ export default function Navbar() {
   const handleSignOut = async () => {
     try {
       setIsSigningOut(true);
-      // First try to sign out with NextAuth
       await signOut({ redirect: false });
-      // Then manually redirect to home
       router.push('/');
       router.refresh();
     } catch (error) {
       console.error('Sign out error:', error);
-      // If sign out fails, still try to redirect to home
       router.push('/');
       router.refresh();
     } finally {
@@ -47,7 +44,7 @@ export default function Navbar() {
       transition={{ duration: 0.5 }}
     >
       <div className="container-width">
-        <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center h-16 px-4 sm:px-6 lg:px-8">
           {/* Logo/Site Name */}
           <Link href="/" className="flex items-center space-x-2">
             <motion.div
@@ -60,21 +57,45 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4">
-            {session ? (
-              // Authenticated Navigation
+          {session ? (
+            <>
+              {/* Center Navigation Links - Hidden on Mobile and Tablet */}
               <motion.div
-                className="flex items-center space-x-6"
+                className="flex-1 hidden lg:flex justify-center items-center space-x-8"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
               >
                 <Link
-                  href="/dashboard/mobile"
-                  className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200"
+                  href="/dashboard"
+                  className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 text-lg font-medium"
                 >
                   Dashboard
                 </Link>
+                <Link
+                  href="/deck"
+                  className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 text-lg font-medium"
+                >
+                  Deck
+                </Link>
+                <Link
+                  href="/profile"
+                  className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 text-lg font-medium"
+                >
+                  Profile
+                </Link>
+              </motion.div>
+
+              {/* Empty div for mobile/tablet spacing */}
+              <div className="flex-1 lg:hidden"></div>
+
+              {/* Right-aligned Sign Out Button */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="hidden lg:block"
+              >
                 <button
                   onClick={handleSignOut}
                   disabled={isSigningOut}
@@ -83,129 +104,102 @@ export default function Navbar() {
                   {isSigningOut ? 'Signing Out...' : 'Sign Out'}
                 </button>
               </motion.div>
-            ) : (
-              // Unauthenticated Navigation
+            </>
+          ) : (
+            <div className="flex-1 flex justify-end">
               <motion.div
-                className="flex items-center space-x-6"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
+                className="hidden lg:block"
               >
-                <div className="flex items-center space-x-6 mr-4 text-[var(--text-secondary)]">
-                  <Link
-                    href="/features"
-                    className="hover:text-[var(--text-primary)] transition-colors duration-200"
-                  >
-                    Features
-                  </Link>
-                  <Link
-                    href="/about"
-                    className="hover:text-[var(--text-primary)] transition-colors duration-200"
-                  >
-                    About
-                  </Link>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Link
-                    href="/auth/signin"
-                    className="text-[var(--text-primary)] hover:text-[var(--primary)] transition-colors duration-200"
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    href="/auth/signup"
-                    className="button-primary text-sm px-4 py-2"
-                  >
-                    Sign Up
-                  </Link>
-                </div>
+                <Link
+                  href="/auth/signin"
+                  className="button-primary text-sm px-4 py-2"
+                >
+                  Sign In
+                </Link>
               </motion.div>
-            )}
-          </div>
+            </div>
+          )}
 
-          {/* Mobile Menu Button */}
-          <Dialog.Root open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-            <Dialog.Trigger asChild>
-              <button className="md:hidden p-2 hover:bg-[var(--surface-secondary)] rounded-lg transition-colors">
+          {/* Mobile/Tablet Menu Button */}
+          <button className="lg:hidden p-2 hover:bg-[var(--surface-secondary)] rounded-lg transition-colors ml-4">
+            <Dialog.Root open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+              <Dialog.Trigger asChild>
                 <Menu className="h-6 w-6 text-[var(--text-primary)]" />
-              </button>
-            </Dialog.Trigger>
+              </Dialog.Trigger>
 
-            <Dialog.Portal>
-              <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50" />
-              <Dialog.Content className="fixed inset-y-0 right-0 w-[80%] max-w-sm bg-[var(--surface-primary)] z-50 p-6 shadow-xl">
-                <div className="flex flex-col h-full">
-                  <div className="flex justify-between items-center mb-8">
-                    <Dialog.Title className="text-xl font-semibold text-[var(--text-primary)]">
-                      Menu
-                    </Dialog.Title>
-                    <Dialog.Close asChild>
-                      <button className="p-2 hover:bg-[var(--surface-secondary)] rounded-lg transition-colors">
-                        <X className="h-6 w-6 text-[var(--text-primary)]" />
-                      </button>
-                    </Dialog.Close>
-                  </div>
-
-                  <div className="flex flex-col space-y-4">
-                    {session ? (
-                      <>
-                        <Link
-                          href="/dashboard/mobile"
-                          className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 py-2"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          Dashboard
-                        </Link>
-                        <button
-                          onClick={() => {
-                            setIsMobileMenuOpen(false);
-                            handleSignOut();
-                          }}
-                          disabled={isSigningOut}
-                          className="button-primary text-sm px-4 py-2 mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          {isSigningOut ? 'Signing Out...' : 'Sign Out'}
+              <Dialog.Portal>
+                <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50" />
+                <Dialog.Content className="fixed inset-y-0 right-0 w-[80%] max-w-sm bg-[var(--surface-primary)] z-50 p-6 shadow-xl">
+                  <div className="flex flex-col h-full">
+                    <div className="flex justify-between items-center mb-8">
+                      <Dialog.Title className="text-xl font-semibold text-[var(--text-primary)]">
+                        Menu
+                      </Dialog.Title>
+                      <Dialog.Close asChild>
+                        <button className="p-2 hover:bg-[var(--surface-secondary)] rounded-lg transition-colors">
+                          <X className="h-6 w-6 text-[var(--text-primary)]" />
                         </button>
-                      </>
-                    ) : (
-                      <>
-                        <Link
-                          href="/features"
-                          className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 py-2"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          Features
-                        </Link>
-                        <Link
-                          href="/about"
-                          className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 py-2"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          About
-                        </Link>
-                        <div className="flex flex-col space-y-3 mt-4">
+                      </Dialog.Close>
+                    </div>
+
+                    {session ? (
+                      <div className="flex flex-col h-full">
+                        {/* Navigation Links */}
+                        <div className="flex flex-col space-y-4">
                           <Link
-                            href="/auth/signin"
-                            className="text-[var(--text-primary)] hover:text-[var(--primary)] transition-colors duration-200 py-2"
+                            href="/dashboard"
+                            className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 py-2"
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
-                            Sign In
+                            Dashboard
                           </Link>
                           <Link
-                            href="/auth/signup"
-                            className="button-primary text-sm px-4 py-2 text-center"
+                            href="/deck"
+                            className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 py-2"
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
-                            Sign Up
+                            Deck
+                          </Link>
+                          <Link
+                            href="/profile"
+                            className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 py-2"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            Profile
                           </Link>
                         </div>
-                      </>
+
+                        {/* Sign Out Button at Bottom */}
+                        <div className="mt-auto pt-4 border-t border-[var(--border-primary)]">
+                          <button
+                            onClick={() => {
+                              setIsMobileMenuOpen(false);
+                              handleSignOut();
+                            }}
+                            disabled={isSigningOut}
+                            className="w-full button-primary text-sm px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {isSigningOut ? 'Signing Out...' : 'Sign Out'}
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <Link
+                        href="/auth/signin"
+                        className="button-primary text-sm px-4 py-2 text-center"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Sign In
+                      </Link>
                     )}
                   </div>
-                </div>
-              </Dialog.Content>
-            </Dialog.Portal>
-          </Dialog.Root>
+                </Dialog.Content>
+              </Dialog.Portal>
+            </Dialog.Root>
+          </button>
         </div>
       </div>
     </motion.nav>
