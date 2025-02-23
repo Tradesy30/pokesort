@@ -1,13 +1,13 @@
 'use client';
 
 import { motion } from "framer-motion";
-import { Sparkles } from '@/app/components/ui/sparkles';
+import { Sparkles } from '@/components/ui/sparkles';
 import Link from 'next/link';
-import { PokemonCardModal } from '@/app/components/pokemon/PokemonCardModal';
+import { PokemonCardModal } from '@/components/pokemon/PokemonCardModal';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { AchievementsPanel } from '@/app/components/achievements/AchievementsPanel';
+import { AchievementsPanel } from '@/components/achievements/AchievementsPanel';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },

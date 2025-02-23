@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
-import { Sparkles } from '@/app/components/ui/sparkles';
-import PasswordInput from '@/app/components/ui/password-input';
+import { Sparkles } from '@/components/ui/sparkles';
+import PasswordInput from '@/components/ui/password-input';
 
 interface FieldError {
   field: string;

@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Sparkles } from '@/app/components/ui/sparkles';
-import { PokemonCardModal } from '@/app/components/pokemon/PokemonCardModal';
+import { Sparkles } from '@/components/ui/sparkles';
+import { PokemonCardModal } from '@/components/pokemon/PokemonCardModal';
 import { use, useState } from 'react';
 
 const fadeInUp = {

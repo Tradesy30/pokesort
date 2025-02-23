@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Sparkles } from '@/app/components/ui/sparkles';
+import { Sparkles } from '@/components/ui/sparkles';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },

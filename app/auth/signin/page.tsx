@@ -4,8 +4,8 @@ import { signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, Suspense } from "react";
 import Link from "next/link";
-import { Sparkles } from '@/app/components/ui/sparkles';
-import PasswordInput from '@/app/components/ui/password-input';
+import { Sparkles } from '@/components/ui/sparkles';
+import PasswordInput from '@/components/ui/password-input';
 
 function SignInForm() {
   const router = useRouter();
