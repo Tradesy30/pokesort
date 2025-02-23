@@ -5,8 +5,17 @@ import { motion } from 'framer-motion';
 import { useSession, signOut } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
 import * as Dialog from '@radix-ui/react-dialog';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
+
+const getPageTitle = (pathname: string | null) => {
+  if (!pathname) return '';
+  if (pathname === '/') return '';
+  if (pathname.startsWith('/deck')) return 'Deck';
+  if (pathname.startsWith('/profile')) return 'Profile';
+  if (pathname.startsWith('/dashboard')) return 'Dashboard';
+  return '';
+};
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -15,6 +24,7 @@ export default function Navbar() {
   const isAuthPage = pathname?.startsWith('/auth');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
+  const pageTitle = getPageTitle(pathname);
 
   // Don't show navbar on auth pages
   if (isAuthPage) {
@@ -46,15 +56,29 @@ export default function Navbar() {
       <div className="container-width">
         <div className="flex items-center h-16 px-4 sm:px-6 lg:px-8">
           {/* Logo/Site Name */}
-          <Link href="/" className="flex items-center space-x-2">
-            <motion.div
-              className="text-2xl font-bold gradient-text"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              PokéSort
-            </motion.div>
-          </Link>
+          <div className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center">
+              <motion.div
+                className="text-2xl font-bold gradient-text"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                PokéSort
+              </motion.div>
+            </Link>
+            {pageTitle && (
+              <div className="flex items-center text-[var(--text-secondary)]">
+                <ChevronRight className="h-5 w-5" />
+                <motion.span
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="text-2xl font-bold gradient-text"
+                >
+                  {pageTitle}
+                </motion.span>
+              </div>
+            )}
+          </div>
 
           {/* Desktop Navigation */}
           {session ? (
