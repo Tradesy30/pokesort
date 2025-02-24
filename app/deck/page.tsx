@@ -3,6 +3,7 @@ import { DeckHeader } from '@/components/deck/deck-header';
 import { DeckGrid } from '@/components/deck/deck-grid';
 import { DeckStats } from '@/components/deck/deck-stats';
 import { LoadingCards } from '@/components/deck/loading-cards';
+import { Background } from '@/components/ui/Background';
 
 export const metadata = {
   title: 'Your Deck | PokéSort',
@@ -12,6 +13,7 @@ export const metadata = {
 export default async function DeckPage() {
   return (
     <main className="container-width min-h-screen py-6 px-4 sm:px-6 lg:px-8 animate-fade-in">
+      <Background />
       <DeckHeader />
 
       <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_300px]">

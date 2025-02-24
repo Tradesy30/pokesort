@@ -7,6 +7,18 @@ export interface IUser extends Document {
   password: string;
   name?: string;
   image?: string;
+  notifications: {
+    email: boolean;
+    push: boolean;
+    newFeatures: boolean;
+    deckUpdates: boolean;
+  };
+  preferences: {
+    theme: 'light' | 'dark' | 'system';
+    cardDisplayStyle: 'grid' | 'list';
+    enableAnimations: boolean;
+    compactMode: boolean;
+  };
   comparePassword: (candidatePassword: string) => Promise<boolean>;
 }
 
@@ -40,6 +52,60 @@ const UserSchema = new Schema<IUser>(
     },
     image: {
       type: String,
+    },
+    notifications: {
+      type: {
+        email: {
+          type: Boolean,
+          default: true,
+        },
+        push: {
+          type: Boolean,
+          default: true,
+        },
+        newFeatures: {
+          type: Boolean,
+          default: true,
+        },
+        deckUpdates: {
+          type: Boolean,
+          default: true,
+        },
+      },
+      default: {
+        email: true,
+        push: true,
+        newFeatures: true,
+        deckUpdates: true,
+      },
+    },
+    preferences: {
+      type: {
+        theme: {
+          type: String,
+          enum: ['light', 'dark', 'system'],
+          default: 'system',
+        },
+        cardDisplayStyle: {
+          type: String,
+          enum: ['grid', 'list'],
+          default: 'grid',
+        },
+        enableAnimations: {
+          type: Boolean,
+          default: true,
+        },
+        compactMode: {
+          type: Boolean,
+          default: false,
+        },
+      },
+      default: {
+        theme: 'system',
+        cardDisplayStyle: 'grid',
+        enableAnimations: true,
+        compactMode: false,
+      },
     },
   },
   {

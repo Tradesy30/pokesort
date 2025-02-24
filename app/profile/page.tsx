@@ -3,6 +3,7 @@ import { ProfileHeader } from '@/components/profile/profile-header';
 import { ProfileContent } from '@/components/profile/profile-content';
 import { ProfileStats } from '@/components/profile/profile-stats';
 import { LoadingProfile } from '@/components/profile/loading-profile';
+import { Background } from '@/components/ui/Background';
 
 export const metadata = {
   title: 'Your Profile | PokéSort',
@@ -12,8 +13,9 @@ export const metadata = {
 export default async function ProfilePage() {
   return (
     <main className="min-h-screen animate-fade-in">
+      <Background />
       {/* Account for navbar height */}
-      <div className="h-16" />
+      <div className="h-2" />
 
       <div className="container-width px-4 sm:px-6 lg:px-8 py-8">
         <ProfileHeader />

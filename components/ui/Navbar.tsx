@@ -14,6 +14,7 @@ const getPageTitle = (pathname: string | null) => {
   if (pathname.startsWith('/deck')) return 'Deck';
   if (pathname.startsWith('/profile')) return 'Profile';
   if (pathname.startsWith('/dashboard')) return 'Dashboard';
+  if (pathname.startsWith('/settings')) return 'Settings';
   return '';
 };
 
@@ -108,6 +109,12 @@ export default function Navbar() {
                 >
                   Profile
                 </Link>
+                <Link
+                  href="/settings"
+                  className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 text-lg font-medium"
+                >
+                  Settings
+                </Link>
               </motion.div>
 
               {/* Empty div for mobile/tablet spacing */}
@@ -193,6 +200,13 @@ export default function Navbar() {
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
                             Profile
+                          </Link>
+                          <Link
+                            href="/settings"
+                            className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 py-2"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            Settings
                           </Link>
                         </div>
 
